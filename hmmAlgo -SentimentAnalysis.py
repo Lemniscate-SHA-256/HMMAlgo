@@ -5,8 +5,20 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 import yfinance as yf
 import argparse
+import requests
 
-print("HMM Model")
+print("HMM Model with Grok Sentiment Analysis")
+
+
+# Function to fetch sentiment data using Grok API
+def fetch_sentiment_data(ticker, start_date, end_date):
+    # Example API Call to Grok 
+    url = f"https://api.grokstream.com/sentiment/{ticker}?start_date={start_date}&end_date={end_date"
+    response = requests.get(url)
+    if response.status_code != 200:
+        raise ValueError(f"Failed to fetch sentiment data for {ticker}. Please check the ticker symbol and try again.")
+    sentiment_data = response.json()
+    return pd.DataFrame(sentiment_data)
 
 # Load and preprocess data
 def load_and_preprocess_data(ticker, start_date, end_date):
